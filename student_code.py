@@ -125,10 +125,57 @@ class KnowledgeBase(object):
         Returns:
             None
         """
+        # An asserted fact should only be removed if it is unsupported
+        # An asserted rule should never be removed.
+        # Use the supports_rules and supports_facts fields to find and adjust facts and rules that are supported by a retracted fact.
+        # The supported_by lists in each fact/rule that it supports needs to be adjusted accordingly.
+        # If a supported fact/rule is no longer supported as a result of retracting this fact(and it is not asserted), it should also be removed.
+
         printv("Retracting {!r}", 0, verbose, [fact_or_rule])
         ####################################################
         # Student code goes here
-        
+
+        # get the fact/rule
+        fact_kb = None
+
+        if isinstance(fact_or_rule, Fact):
+            if fact_or_rule in self.facts:
+                fact_kb = self._get_fact(fact_or_rule)
+            else:
+                print("Error: the fact is not in the KB!")
+                return
+        elif isinstance(fact_or_rule, Rule):
+            if fact_or_rule in self.rules:
+                print("An asserted rule cannot be retracted!")
+                return
+        else:
+            print("Input is neither a fact nor a rule!")
+
+        if isinstance(fact_or_rule, Fact) and len(fact_kb.supported_by) == 0:
+            if fact_or_rule.asserted:
+                fact_or_rule.asserted = False
+            # remove the fact itself
+            self.facts.remove(fact_kb)
+
+            # remove related facts supported by the fact_kb to delete
+            for fact_related in fact_kb.supports_facts:
+                fact_related = self._get_fact(fact_related)
+                #for items in fact_related.supported_by:
+                    #if fact_or_rule == items[0]:
+                        #fact_related.supported_by.remove(items)
+                # delete related/supported facts in kb
+                self.facts.remove(fact_related)
+
+            # remove related rules supported by the fact_kb to delete
+            for rule_related in fact_kb.supports_rules:
+                #
+                for items in rule_related.supported_by:
+                    if fact_kb == items:
+                        rule_related.supported_by.remove(fact_kb)
+                # delete related/supported rules in kb
+                self.rules.remove(rule_related)
+
+
 
 class InferenceEngine(object):
     def fc_infer(self, fact, rule, kb):
@@ -146,3 +193,40 @@ class InferenceEngine(object):
             [fact.statement, rule.lhs, rule.rhs])
         ####################################################
         # Student code goes here
+        # Only check the first element of rule's LHS
+        binding = match(fact.statement, rule.lhs[0])
+
+        if binding:
+            # it is a new rule to add
+            if len(rule.lhs) == 1:
+                # create new inferred fact
+                new_statement = instantiate(rule.rhs, binding)
+                new_fact = Fact(new_statement, [fact, rule])
+                # assert new fact into kb
+                kb.kb_assert(new_fact)
+                # assert new fact into fact/rule's supports_facts
+                fact.supports_facts.append(new_fact)
+                rule.supports_facts.append(new_fact)
+
+            # because lhs>1, it could create new rule
+            elif len(rule.lhs) > 1:
+                new_rule_lhs = []
+                for element in rule.lhs[1:]:
+                    # for LHS
+                    new_statement = instantiate(element, binding)
+                    new_rule_lhs.append(new_statement)
+                    # for RHS
+                    new_rule_rhs = instantiate(rule.rhs, binding)
+                    new_rule_add = Rule([new_rule_lhs, new_rule_rhs], [fact, rule])
+
+                    new_rule_add.supported_by.append([fact, rule])
+                    # assert new rule into fact/rule's supports_rules
+                    fact.supports_rules.append(new_rule_add)
+                    rule.supports_rules.append(new_rule_add)
+
+                    kb.kb_add(new_rule_add)
+
+
+
+
+
