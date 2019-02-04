@@ -115,7 +115,6 @@ class KnowledgeBase(object):
         else:
             print("Invalid ask:", fact.statement)
             return []
-
     def kb_retract(self, fact_or_rule):
         """Retract a fact from the KB
 
@@ -161,17 +160,17 @@ class KnowledgeBase(object):
             for fact_related in fact_kb.supports_facts:
                 fact_related = self._get_fact(fact_related)
                 #for items in fact_related.supported_by:
-                    #if fact_or_rule == items[0]:
+                    #if fact_kb in items:
                         #fact_related.supported_by.remove(items)
                 # delete related/supported facts in kb
                 self.facts.remove(fact_related)
 
             # remove related rules supported by the fact_kb to delete
             for rule_related in fact_kb.supports_rules:
-                #
+                rule_related = self._get_rule(rule_related)
                 for items in rule_related.supported_by:
-                    if fact_kb == items:
-                        rule_related.supported_by.remove(fact_kb)
+                    if fact_kb in items:
+                        rule_related.supported_by.remove(items)
                 # delete related/supported rules in kb
                 self.rules.remove(rule_related)
 
