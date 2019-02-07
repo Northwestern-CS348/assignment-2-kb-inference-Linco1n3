@@ -1,0 +1,52 @@
+TESTS WITH ERRORS 
+test13 (gradingtests.UnitTests)
+Traceback (most recent call last):
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference/gradingtests.py", line 370, in test13
+    KB.kb_retract(fact1)
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference/student_code.py", line 172, in kb_retract
+    if fact_kb in items:
+TypeError: argument of type 'Fact' is not iterable
+
+test14 (gradingtests.UnitTests)
+Traceback (most recent call last):
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference/gradingtests.py", line 399, in test14
+    KB.kb_retract(fact1)
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference/student_code.py", line 172, in kb_retract
+    if fact_kb in items:
+TypeError: argument of type 'Fact' is not iterable
+
+test4 (gradingtests.UnitTests)
+Traceback (most recent call last):
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference/gradingtests.py", line 83, in test4
+    KB.kb_retract(fact1)
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference/student_code.py", line 172, in kb_retract
+    if fact_kb in items:
+TypeError: argument of type 'Fact' is not iterable
+
+test5 (gradingtests.UnitTests)
+Traceback (most recent call last):
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference/gradingtests.py", line 121, in test5
+    KB.kb_retract(fact1)
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference/student_code.py", line 172, in kb_retract
+    if fact_kb in items:
+TypeError: argument of type 'Fact' is not iterable
+
+test9 (gradingtests.UnitTests)
+Traceback (most recent call last):
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference/gradingtests.py", line 258, in test9
+    KB.kb_retract(fact1)
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference/student_code.py", line 172, in kb_retract
+    if fact_kb in items:
+TypeError: argument of type 'Fact' is not iterable
+
+-------------------------------
+TESTS FAILED  
+test10 (gradingtests.UnitTests)
+Traceback (most recent call last):
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference/gradingtests.py", line 282, in test10
+    self.assertFalse(answer2)
+AssertionError: True is not false
+
+-------------------------------
+TESTS SKIPPED 
+-------------------------------
